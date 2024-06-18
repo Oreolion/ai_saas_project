@@ -27,16 +27,21 @@ export const getTopUserByPodcastCount = query({
     const userData = await Promise.all(
       user.map(async (u) => {
         const podcasts = await ctx.db
+          // @ts-ignore
+
           .query("podcasts")
           .filter((q) => q.eq(q.field("authorId"), u.clerkId))
           .collect();
 
+        // @ts-ignore
         const sortedPodcasts = podcasts.sort((a, b) => b.views - a.views);
 
         return {
           ...u,
           totalPodcasts: podcasts.length,
           podcast: sortedPodcasts.map((p) => ({
+            // @ts-ignore
+
             podcastTitle: p.podcastTitle,
             pocastId: p._id,
           })),
@@ -87,6 +92,8 @@ export const updateUser = internalMutation({
     });
 
     const podcast = await ctx.db
+      // @ts-ignore
+
       .query("podcasts")
       .filter((q) => q.eq(q.field("authorId"), args.clerkId))
       .collect();

@@ -4,7 +4,6 @@
 
 import type { WebhookEvent } from "@clerk/nextjs/server";
 import { httpRouter } from "convex/server";
-// import { Webhook } from "../node_modules/svix";
 import { Webhook } from "svix";
 
 import { internal } from "./_generated/api";
