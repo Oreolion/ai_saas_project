@@ -36,15 +36,19 @@ const formSchema = z.object({
 });
 
 export default function CreatePodcast() {
-    const [audioStorageId, setAudioStorageId ] = useState<Id<"_storage"> | null >(null);
-    const [audioUrl, setAudioUrl ] = useState("");
-    const [audioDuration, setAudioDuration ] = useState(0);
-    const [imageUrl, setImageUrl ] = useState("");
-    const [imagePrompt, setImagePrompt] = useState("");
-    const [imageStorageId, setImageStorageId ] = useState<Id<"_storage"> | null >(null);
-    const [voiceType, setVoiceType] = useState<string | null>(null);
-    const [voicePrompt, setVoicePrompt] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(
+    null
+  );
+  const [audioUrl, setAudioUrl] = useState("");
+  const [audioDuration, setAudioDuration] = useState(0);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imagePrompt, setImagePrompt] = useState("");
+  const [imageStorageId, setImageStorageId] = useState<Id<"_storage"> | null>(
+    null
+  );
+  const [voiceType, setVoiceType] = useState<string | null>(null);
+  const [voicePrompt, setVoicePrompt] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -151,32 +155,36 @@ export default function CreatePodcast() {
           </div>
           <div className="flex flex-col pt-10">
             <GeneratePodcast
-            setAudioStorageId={setAudioStorageId}
-            setAudio={setAudioUrl}
-            voiceType={voiceType!}
-            audio={audioUrl}
-            voicePrompt={voicePrompt}
-            setVoicePrompt={setVoicePrompt}
-            setAudioDuration={setAudioDuration}
-            
+              setAudioStorageId={setAudioStorageId}
+              setAudio={setAudioUrl}
+              voiceType={voiceType!}
+              audio={audioUrl}
+              voicePrompt={voicePrompt}
+              setVoicePrompt={setVoicePrompt}
+              setAudioDuration={setAudioDuration}
             ></GeneratePodcast>
             <GenerateThumbnail
-            
-            
+              setImage={setImageUrl}
+              setImageStorageId={setImageStorageId}
+              image={imageUrl}
+              imagePrompt={imagePrompt}
+              setImagePrompt={setImagePrompt}
             ></GenerateThumbnail>
           </div>
           <div className="mt-10 w-full">
-            <Button type="submit" className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1">
-                {isSubmitting ? (
-                    <>
-                    <Loader size={20} className="animate-spin ml-2"></Loader>
-                    Submitting
-                    </>
-                ):(
-                    "Submit & Publish Podcast"
-                )
-            }
-                </Button>
+            <Button
+              type="submit"
+              className="text-16 w-full bg-orange-1 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black-1"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader size={20} className="animate-spin ml-2"></Loader>
+                  Submitting
+                </>
+              ) : (
+                "Submit & Publish Podcast"
+              )}
+            </Button>
           </div>
         </form>
       </Form>
