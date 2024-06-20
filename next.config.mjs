@@ -12,6 +12,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'perfect-gazelle-309.convex.cloud',
             },
+            {
+                protocol: 'https',
+                hostname: 'img.clerk.com',
+            },
         ]
     }
 };
