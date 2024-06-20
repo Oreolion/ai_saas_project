@@ -77,7 +77,11 @@ const PodcastDetails = ({
           </div>
         ) : (
             <>
-            <EmptyStates></EmptyStates>
+            <EmptyStates
+            title="No Similar Podcast Found"
+            buttonLink="/discover"
+            buttonText="Discover more podcasts"
+            ></EmptyStates>
             </>
           )}
       </section>
