@@ -25,8 +25,8 @@ export const generateAudioAction = action({
   },
 });
 export const generateThumbnailAction = action({
-  args: { input: v.string() },
-  handler: async (_, {prompt }) => {
+  args: { prompt: v.string() },
+  handler: async (_, { prompt }) => {
     // do something with `args.a` and `args.b`
 
     const response = await openai.images.generate({
