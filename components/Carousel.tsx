@@ -5,12 +5,14 @@ import Autoplay from 'embla-carousel-autoplay'
 import useEmblaCarousel from 'embla-carousel-react'
 import { CarouselProps } from '@/types'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import LoaderSpinner from './LoaderSpinner'
 
 
 
 const Carousel = ({ fansLikeDetail}: CarouselProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()])
-    const router = useRouter
+    const router = useRouter()
   const onNavButtonClick = useCallback((emblaApi: EmblaCarouselType) => {
     const autoplay = emblaApi?.plugins()?.autoplay
     if (!autoplay || !("stopOnInteraction" in autoplay.options)) return
@@ -30,31 +32,44 @@ const Carousel = ({ fansLikeDetail}: CarouselProps) => {
 
   const slides = fansLikeDetail && fansLikeDetail?.filter((item: any)=> item.totalPodcasts > 0)
 
-  return (
-    <section className="embla">
-      <div className="embla__viewport" ref={emblaRef}>
-        <div className="embla__container">
-          {slides?.map((index) => (
-            <div className="embla__slide" key={index}>
-              <div className="embla__slide__number">{index + 1}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+  if (!slides) return <LoaderSpinner></LoaderSpinner>
 
-      <div className="embla__controls">
-        <div className="embla__dots">
-          {scrollSnaps.map((_, index) => (
-            <DotButton
-              key={index}
-              onClick={() => onDotButtonClick(index)}
-              className={'embla__dot'.concat(
-                index === selectedIndex ? ' embla__dot--selected' : ''
-              )}
+  return (
+    <section className="flex w-full flex-col gap-4 overflow-hidden " 
+    // ref={emblemRef}
+    >
+        <div className='flex'>
+        {slides.slice(0, 5).map((item) => (
+          <figure
+            key={item._id}
+            className="carousel_box"
+            onClick={() => router.push(`/podcasts/${item.podcast[0]?.podcastId}`)}
+          >
+            <Image 
+            src={item.imageUrl}
+            alt="card"
+            fill
+            className="absolute size-full rounded-xl border-none"
+            />
+            <div className="glassmorphism-black relative z-10 flex flex-col rounded-b-xl p-4">
+              <h2 className="text-14 font-semibold text-white-1">{item.podcast[0]?.podcastTitle}</h2>
+              <p className="text-12 font-normal text-white-2">{item.name}</p>
+            </div>
+          </figure>
+        ))}            
+        </div>
+
+     
+        <div className="flex justify-center gap-2">
+        {scrollSnaps.map((_, index) => (
+          <DotButton
+            key={index}
+            onClick={() => onDotButtonClick(index)}
+            selected={index === selectedIndex}
             />
           ))}
-        </div>
       </div>
+     
     </section>
   )
 }
