@@ -29,6 +29,10 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   podcastTitle: z.string().min(2),
@@ -49,6 +53,11 @@ export default function CreatePodcast() {
   const [voiceType, setVoiceType] = useState<string | null>(null);
   const [voicePrompt, setVoicePrompt] = useState("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { toast } = useToast();
+  const router = useRouter();
+  // @ts-ignore
+  const createPodcast = useMutation(api.podcasts.createPodcast);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,10 +68,41 @@ export default function CreatePodcast() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    try {
+      setIsSubmitting(true);
+      if (!audioUrl || !imageUrl || !voiceType) {
+        toast({
+          title: "Please generate Audio and Thumbnail",
+        });
+        setIsSubmitting(false);
+        throw new Error("Please generate Audio and Thumbnail");
+      }
+      await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        voiceType,
+        imagePrompt,
+        views: 0,
+        audioDuration,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId,
+      });
+      toast({
+        title: "Podcast Created",
+      });
+      setIsSubmitting(false);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error occured while Generating Podcast",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+    }
   }
 
   const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
