@@ -9,16 +9,21 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import LoaderSpinner from "./LoaderSpinner";
 import { useRouter } from "next/navigation";
+import { useAudio } from "@/app/providers/AudioProvider";
+import { cn } from "@/lib/utils";
 
 const RightSidebar = () => {
   const { user } = useUser();
   const topPodcasters = useQuery(api.users.getTopUserByPodcastCount);
   const router = useRouter();
+  const {audio} = useAudio()
+
   if (!topPodcasters) return <LoaderSpinner></LoaderSpinner>;
 
   return (
-    <section className="right_sidebar text-white-1">
-      <SignedIn>
+    <section className={cn("right_sidebar h-[calc(100vh-5px)]", {
+        "h-[calc(100vh - 140px)]": audio?.audioUrl
+    })}>      <SignedIn>
         <div className="flex justify-between">
           <Link className="flex gap-3 pb-12" href={`/profile/${user?.id}`}>
             <UserButton></UserButton>

@@ -13,7 +13,7 @@ const EmptyStates = ({
   return (
     <section className="flex-center flex flex-col gap-3">
       <Image
-        src="/icons/emptystates.svg"
+        src="/icons/emptyState.svg"
         width={250}
         height={250}
         alt="empty states"
