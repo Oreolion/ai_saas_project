@@ -1,6 +1,6 @@
 "use client";
 
-import PodcastDetailPlayer from "@/components/podcastDetailPlayer";
+import PodcastDetailPlayer from "@/components/PodcastDetailPlayer";
 import EmptyStates from "@/components/EmptyStates";
 import LoaderSpinner from "@/components/LoaderSpinner";
 import { api } from "@/convex/_generated/api";
