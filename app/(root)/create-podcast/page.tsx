@@ -78,18 +78,19 @@ export default function CreatePodcast() {
         setIsSubmitting(false);
         throw new Error("Please generate Audio and Thumbnail");
       }
-      await createPodcast({
+      const podcast = await createPodcast({
         podcastTitle: data.podcastTitle,
         podcastDescription: data.podcastDescription,
         audioUrl,
         imageUrl,
         voiceType,
         imagePrompt,
+        voicePrompt,
         views: 0,
         audioDuration,
         audioStorageId: audioStorageId!,
-        imageStorageId: imageStorageId,
-      });
+        imageStorageId: imageStorageId!,
+      })
       toast({
         title: "Podcast Created",
       });

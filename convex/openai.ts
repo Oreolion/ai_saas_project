@@ -2,6 +2,7 @@ import { action } from "./_generated/server";
 // @ts-ignore
 import { SpeechCreateParams } from "openai/resources/audio/speech.mjs";
 import { v } from "convex/values";
+import { Buffer } from 'buffer';
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -9,21 +10,20 @@ const openai = new OpenAI({
 });
 
 export const generateAudioAction = action({
-  args: { input: v.string(), voice: v.string() },
-  handler: async (_, { voice, input }) => {
-    // do something with `args.a` and `args.b`
-
-    const mp3 = await openai.audio.speech.create({
-      model: "tts-1",
-      voice: voice as SpeechCreateParams["voice"],
-      input,
-    });
-    const buffer = Buffer.from(await mp3.arrayBuffer());
-
-    // optionally return a value
-    return buffer;
-  },
-});
+    args: { input: v.string(), voice: v.string() },
+    handler: async (_, { voice, input }) => {
+      const mp3 = await openai.audio.speech.create({
+        model: "tts-1",
+        voice: voice as SpeechCreateParams['voice'],
+        input,
+      });
+  
+      const buffer = await mp3.arrayBuffer();
+      
+      return buffer;
+    },
+  });
+  
 export const generateThumbnailAction = action({
   args: { prompt: v.string() },
   handler: async (_, { prompt }) => {
