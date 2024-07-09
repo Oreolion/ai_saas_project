@@ -1,6 +1,5 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { podcastData } from '../constants/index';
 
 export default defineSchema({
   Podcasts: defineTable({
